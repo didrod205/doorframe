@@ -7,7 +7,7 @@
 <meta name="description" content="Paste an open agentic website. Doorframe checks it against the Minimum Viable Specification in your browser, draws its agent network, follows its peer links, and its own agent desk explains the fixes.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src *; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=3">
 <link rel="agent-manifest" href="agent-manifest.json">
 <script type="module" src="site.js"></script>
 </head>
@@ -19,7 +19,7 @@
 
 <main>
 <section class="hero" id="check">
-  <p class="eyebrow">For builders of open agentic websites</p>
+  <p class="eyebrow">For everyone putting agents on the open web</p>
   <h1>Can other agents walk through your door?</h1>
   <p class="lede">Paste your site. Doorframe reads its <code>agent-manifest.json</code>, network and <code>links.json</code> the way a peer site would, checks them against the Minimum Viable Specification section by section, draws your agent network and follows your peer links. It runs in your browser and needs no key.</p>
 
@@ -49,6 +49,12 @@
     </form>
   </div>
   <p id="status" role="status" class="status"></p>
+</section>
+
+<section class="who" aria-label="Who Doorframe is for">
+  <article><p class="eyebrow">Challenge entrants</p><h3>Stage one is pass or fail</h3><p>Every entry is first judged on whether it follows the specification. Doorframe tells you, check by check with the spec section, before you submit.</p></article>
+  <article><p class="eyebrow">Site owners adopting the spec</p><h3>Works for you, invisible to agents</h3><p>A restaurant or guesthouse site can answer its own visitors and still be unreadable to every other agentic website: a missing CORS header, a wrong front agent, a broken peer link.</p></article>
+  <article><p class="eyebrow">Other agents</p><h3>Agents can ask to be checked</h3><p>Doorframe's desk is itself an open agent network. Any agent network can load it as a peer, or use its desk here, and get a site checked and the fix written.</p></article>
 </section>
 
 <section id="report" class="report" hidden>

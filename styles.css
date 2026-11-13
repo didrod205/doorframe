@@ -44,6 +44,10 @@ textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; paddi
 .paste .btn { justify-self: start; }
 .muted { color: var(--muted); font-size: 13px; margin: 0; }
 .status { font-size: 14px; color: var(--muted); min-height: 1.5em; margin: 14px 0 0; }
+.who { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 8px 0 32px; }
+.who article { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+.who h3 { font-size: 17px; margin: 0 0 6px; letter-spacing: -0.01em; }
+.who p:not(.eyebrow) { margin: 0; font-size: 14px; color: #33312c; }
 .report { padding: 8px 0 40px; }
 .verdict { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; padding: 22px 24px; border: 1.5px solid var(--ink); border-radius: 12px; background: #fff; flex-wrap: wrap; }
 .verdict h2 { margin: 0; }
@@ -101,7 +105,7 @@ footer { max-width: 1120px; margin: 40px auto 0; padding: 24px clamp(16px, 4vw, 
 .df-dialog p { font-size: 14px; color: #33312c; }
 .df-dialog .row { display: flex; gap: 8px; justify-content: flex-end; }
 @media (max-width: 820px) {
-  .report-grid { grid-template-columns: 1fr; }
+  .report-grid, .who { grid-template-columns: 1fr; }
   .checkbar { flex-direction: column; }
   .hero { padding-top: 32px; }
 }

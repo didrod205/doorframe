@@ -6,6 +6,12 @@ Live site: https://didrod205.github.io/doorframe/
 
 Paste a site URL. Doorframe reads its `agent-manifest.json`, network definition and `links.json` the way a peer site would, runs about 25 checks that each cite a spec section, draws the agent network, and follows the site's peer links one hop to check those too. The checker is deterministic code and needs no LLM key. The site's own agent network (the "desk") then explains the report and writes fixes, using the visitor's own key.
 
+## Who it is for
+
+- **Challenge entrants.** Stage one of the Open Agentic Web Challenge is pass or fail on spec conformance. Doorframe tells you, check by check, before you submit.
+- **Site owners adopting the spec.** A site can work for its own visitors and still be unreadable to every other agentic website. Doorframe reads it the way a peer would.
+- **Other agents.** The desk is an open agent network that other agent networks can load as a peer to get a site checked and the fix written.
+
 ## Why
 
 The challenge's first gate is spec conformance, and the official repository's Testing section still says "TODO Run the validation script". Builders need to know, before they submit, whether a peer on another origin can actually load their network. Some failures are invisible from your own origin: a site can work perfectly for its own visitors and still be unreadable to every other agentic website because its public files send no CORS header.

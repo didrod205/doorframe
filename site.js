@@ -20,5 +20,6 @@ try {
   window.doorframeEngine = engine;
 } catch (error) {
   status.textContent = "The desk could not load. The checker above still works without it.";
+  window.__deskError = String(error && error.stack || error);
   console.error("Runtime boot failed", error);
 }

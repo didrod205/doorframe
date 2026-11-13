@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "description": "Answers what the Minimum Viable Specification for a Worldwide Agentic Web requires, section by section."
+  },
+  "llm_config": {
+    "model_name": "alibaba/qwen-3.5-35b-a3b"
+  },
+  "max_execution_seconds": 120,
+  "tools": [
+    {
+      "name": "spec_guide",
+      "function": {
+        "description": "Answers a question about the open agentic web specification and names the section.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inquiry": {
+              "type": "string",
+              "description": "The visitor's question or the task, in plain words."
+            }
+          },
+          "required": [
+            "inquiry"
+          ]
+        }
+      },
+      "instructions": "Answer from spec_sections only. Name the section number. If the sections do not cover the question, say so.",
+      "tools": [
+        "spec_sections"
+      ]
+    },
+    {
+      "name": "spec_sections",
+      "function": {
+        "description": "Returns the requirements of the specification sections that match a question.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inquiry": {
+              "type": "string",
+              "description": "The visitor's question or the task, in plain words."
+            }
+          },
+          "required": [
+            "inquiry"
+          ]
+        }
+      },
+      "instructions": "You hold these summaries of the Minimum Viable Specification (source: github.com/cognizant-ai-labs/agentic-web, docs/worldwide_agentic_web_mvp_spec.md, Apache-2.0). Return the ones that match the question, verbatim.\n2.1 Minimum network content: stable network name, short description, front agent name; each agent has a unique name, a function description, instructions when it uses an LLM, and a list of agents or tools it may call; callable agents expose JSON Schema inputs; model settings are hints and the caller's router takes precedence; private context is deny-by-default across sites; external capabilities may be peer-network URLs or MCP servers and must fail closed when unavailable.\n3.1 Runtime: reject malformed networks before any model call; support streaming, tool calls, delegation, bounded history; validate site action arguments and show destination and arguments before a write; report unknown outcomes after timeouts; enforce limits on depth, invocations, remote calls, concurrency and time.\n3.2 Peer loading: a peer-network URL's final path component is the network name and the preceding path is the site base holding agent-manifest.json; the peer runs in the caller's browser with the caller's router and key, and the key is never sent to the peer; consent before contacting each third-party origin; exact name match or fail.\n3.3 Public files: agent-manifest.json with networks (name, front_man, hocon), top-site LLM router metadata and peer policy, public GET with CORS enabled for callers; the network definition at the declared location; links.json maps symbolic peer names to URLs.\n3.4 Origins: same-origin bundles need no CORS; cross-origin public artifacts must be allowed by the publisher; requests must not carry the caller's private credentials.\n4 Inference: a site may publish a default router or offer BYOK; a BYOK key stays in the browser, goes only to the chosen router, and never appears in URLs, manifests, prompts, traces or peer requests; users can delete stored profiles.\n6 Interoperability checks: two-agent network and manifest on HTTPS; run with default router and BYOK; call an internal agent and a grounded capability; load a named network from a second origin after approval; show the second site never gets the key; show private context is absent; stop invalid networks, cycles, over-budget requests and denied origins with visible errors.",
+      "tools": []
+    }
+  ]
+}

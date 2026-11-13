@@ -1,0 +1,7 @@
+{
+  "protocol": "nsdeploy-agent-mcp/v1",
+  "network": "doorframe_desk",
+  "front_man": "checkup_desk",
+  "available": false,
+  "reason": "Static site on GitHub Pages; no public MCP facade."
+}

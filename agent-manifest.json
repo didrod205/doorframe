@@ -1,0 +1,84 @@
+{
+  "brand": "Doorframe",
+  "networks": [
+    {
+      "name": "doorframe_desk",
+      "front_man": "checkup_desk",
+      "hocon": "./doorframe_desk.network.json",
+      "description": "Checks open agentic websites against the Minimum Viable Specification and explains fixes.",
+      "tags": [
+        "validator",
+        "developer-tools",
+        "agentic-web"
+      ],
+      "sample_queries": [
+        "Check https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@main/examples/guesthouse_agentified/ and tell me what would stop a peer from loading it.",
+        "Why is my CORS check a warning, and what header do I send?",
+        "Write a minimal agent-manifest.json for a network called recipe_helper with front agent kitchen_desk."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [
+    "https://cdn.jsdelivr.net"
+  ],
+  "peer_policy": {
+    "mode": "allowlist",
+    "deny_origins": [],
+    "note": "Only the Doorframe spec_reference peer is contacted, after the visitor approves the origin."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "doorframe_desk",
+    "front_man": "checkup_desk",
+    "available": false,
+    "reason": "Static site on GitHub Pages; no public MCP facade."
+  },
+  "theme": {
+    "primary": "#e8590c"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "doorframe_desk",
+        "front_man": "checkup_desk",
+        "aliases": [
+          "doorframe_desk",
+          "checkup_desk"
+        ],
+        "url": "doorframe_desk"
+      }
+    ],
+    "imports": [
+      {
+        "slot": "spec_reference",
+        "url": "https://cdn.jsdelivr.net/gh/didrod205/doorframe@peer-v1/peer/spec_reference"
+      }
+    ],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "agentTools": [
+      "run_conformance_check",
+      "get_last_report",
+      "focus_check"
+    ]
+  }
+}

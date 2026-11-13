@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "networks": {
+    "doorframe_desk": {
+      "spec_reference": "https://cdn.jsdelivr.net/gh/didrod205/doorframe@peer-v1/peer/spec_reference"
+    }
+  }
+}

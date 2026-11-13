@@ -1,0 +1,44 @@
+{
+  "brand": "Doorframe spec reference",
+  "networks": [
+    {
+      "name": "spec_reference",
+      "front_man": "spec_guide",
+      "hocon": "./spec_reference.network.json",
+      "description": "Answers what the open agentic web specification requires, by section.",
+      "tags": [
+        "reference"
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Leaf network: calls no other sites."
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "spec_reference",
+        "front_man": "spec_guide",
+        "aliases": [
+          "spec_reference"
+        ],
+        "url": "spec_reference"
+      }
+    ],
+    "imports": []
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": false,
+    "public_mcp_facade": false
+  }
+}

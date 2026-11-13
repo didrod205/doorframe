@@ -1,0 +1,90 @@
+{
+  "metadata": {
+    "description": "Doorframe desk: checks open agentic websites against the Minimum Viable Specification and explains how to fix what fails.",
+    "sample_queries": [
+      "Check https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@main/examples/guesthouse_agentified/ and tell me what would stop a peer from loading it.",
+      "Why is my CORS check a warning, and what header do I send?",
+      "Write a minimal agent-manifest.json for a network called recipe_helper with front agent kitchen_desk."
+    ]
+  },
+  "llm_config": {
+    "model_name": "alibaba/qwen-3.5-35b-a3b"
+  },
+  "max_execution_seconds": 240,
+  "link_slots": {
+    "spec_reference": {
+      "callers": [
+        "checkup_desk"
+      ]
+    }
+  },
+  "tools": [
+    {
+      "name": "checkup_desk",
+      "function": {
+        "description": "Front desk for Doorframe. Takes a question about an open agentic website or the spec and routes it.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inquiry": {
+              "type": "string",
+              "description": "The visitor's question or the task, in plain words."
+            }
+          },
+          "required": [
+            "inquiry"
+          ]
+        }
+      },
+      "instructions": "You are the Doorframe desk. Route each request: to conformance_auditor when the visitor wants a site checked or asks about a check result; to fix_writer when they need corrected files or headers; to spec_reference (a peer network published on another origin) when they ask what the specification says. Combine the answers into one short reply. Facts about a checked site come only from website_* tool results in this conversation. Never invent check results, URLs, status codes or spec wording. If a result does not contain a fact, say you do not know. Keep replies under 150 words unless the visitor asks for a file.",
+      "tools": [
+        "conformance_auditor",
+        "fix_writer",
+        "spec_reference"
+      ]
+    },
+    {
+      "name": "conformance_auditor",
+      "function": {
+        "description": "Runs Doorframe's deterministic conformance check on a URL through the website and reports which checks pass, warn or fail.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inquiry": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string",
+              "description": "Site base, page or peer-network URL to check."
+            }
+          },
+          "required": [
+            "inquiry"
+          ]
+        }
+      },
+      "instructions": "Use website_run_conformance_check to check a URL, website_get_last_report to read the report already on the page, and website_focus_check to point the visitor at one check on the page. The check is deterministic code, not your opinion: report its statuses exactly, name failing checks first, and quote the spec section each one cites. Facts about a checked site come only from website_* tool results in this conversation. Never invent check results, URLs, status codes or spec wording. If a result does not contain a fact, say you do not know.",
+      "tools": []
+    },
+    {
+      "name": "fix_writer",
+      "function": {
+        "description": "Writes the smallest corrected manifest, network, links.json or hosting header that fixes a reported failure.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "inquiry": {
+              "type": "string",
+              "description": "The visitor's question or the task, in plain words."
+            }
+          },
+          "required": [
+            "inquiry"
+          ]
+        }
+      },
+      "instructions": "Write only what is needed to fix the failures you are given, as a fenced JSON or header snippet, then one sentence on why. Never put API keys or secrets in published files. If you are not given a failure, ask which check to fix. Facts about a checked site come only from website_* tool results in this conversation. Never invent check results, URLs, status codes or spec wording. If a result does not contain a fact, say you do not know.",
+      "tools": []
+    }
+  ]
+}

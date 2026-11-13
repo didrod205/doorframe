@@ -1,0 +1,21 @@
+// Offline tests for the check core: a good network passes, broken ones fail closed.
+import { checkDocuments } from "../check-core.js";
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const here = new URL("../", import.meta.url);
+const read = (p) => fs.readFileSync(new URL(p, here), "utf8");
+const good = checkDocuments({ manifestText: read("agent-manifest.json"), networkText: read("doorframe_desk.network.json"), linksText: read("links.json") });
+assert.equal(good.count.fail, 0, JSON.stringify(good.checks.filter(c => c.status === "fail")));
+const net = JSON.parse(read("doorframe_desk.network.json"));
+net.tools[0].tools.push("ghost_agent");
+const missing = checkDocuments({ manifestText: read("agent-manifest.json"), networkText: JSON.stringify(net), linksText: read("links.json") });
+assert.ok(missing.checks.some(c => c.id === "agents.references" && c.status === "fail"));
+const m = JSON.parse(read("agent-manifest.json")); delete m.llm_router; m.networks[0].front_man = "nobody";
+const badManifest = checkDocuments({ manifestText: JSON.stringify(m), networkText: read("doorframe_desk.network.json"), linksText: null });
+assert.ok(badManifest.checks.some(c => c.id === "manifest.router" && c.status === "fail"));
+assert.ok(badManifest.checks.some(c => c.id === "agents.front" && c.status === "fail"));
+const leaked = checkDocuments({ manifestText: read("agent-manifest.json").replace('"brand"', '"key": "sk-' + "a".repeat(30) + '", "brand"'), networkText: read("doorframe_desk.network.json"), linksText: null });
+assert.ok(leaked.checks.some(c => c.id.startsWith("secrets.") && c.status === "fail"));
+const notJson = checkDocuments({ manifestText: "{ nope", networkText: null, linksText: null });
+assert.equal(notJson.verdict, "fail");
+console.log("check-core tests passed:", good.count.pass, "checks pass on this site's own files");

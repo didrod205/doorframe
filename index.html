@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doorframe: conformance checkup for open agentic websites</title>
+<meta name="description" content="Paste an open agentic website. Doorframe checks it against the Minimum Viable Specification in your browser, draws its agent network, follows its peer links, and its own agent desk explains the fixes.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src *; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<link rel="agent-manifest" href="agent-manifest.json">
+<script type="module" src="site.js"></script>
+</head>
+<body>
+<header class="top">
+  <a class="mark" href="./"><span class="frame" aria-hidden="true"></span>Doorframe</a>
+  <nav><a href="#check">Check</a><a href="#desk">Ask the desk</a><a href="#connect">Connect</a><a href="#cli">CLI</a><a href="https://github.com/didrod205/doorframe">Source</a></nav>
+</header>
+
+<main>
+<section class="hero" id="check">
+  <p class="eyebrow">For builders of open agentic websites</p>
+  <h1>Can other agents walk through your door?</h1>
+  <p class="lede">Paste your site. Doorframe reads its <code>agent-manifest.json</code>, network and <code>links.json</code> the way a peer site would, checks them against the Minimum Viable Specification section by section, draws your agent network and follows your peer links. It runs in your browser and needs no key.</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" aria-controls="tab-url" id="t-url">Check a URL</button>
+    <button role="tab" aria-selected="false" aria-controls="tab-paste" id="t-paste">Check pasted files</button>
+  </div>
+  <div id="tab-url" role="tabpanel" aria-labelledby="t-url">
+    <form id="check-form" class="checkbar">
+      <label for="url" class="sr">Site URL</label>
+      <input id="url" type="url" required placeholder="https://your-site.example/agents/" autocomplete="url" spellcheck="false">
+      <button class="btn" type="submit">Run checkup</button>
+    </form>
+    <p class="samples">Try:
+      <button type="button" class="chip" data-sample="self">This site</button>
+      <button type="button" class="chip" data-sample="https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@main/examples/guesthouse_agentified/">Official guesthouse example</button>
+      <button type="button" class="chip" data-sample="https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@main/examples/sites/pizza_restaurant_website_assistant_static/">Official pizza bundle</button>
+    </p>
+  </div>
+  <div id="tab-paste" role="tabpanel" aria-labelledby="t-paste" hidden>
+    <form id="paste-form" class="paste">
+      <label>agent-manifest.json<textarea id="p-manifest" rows="6" spellcheck="false" required></textarea></label>
+      <label>Network definition (.network.json or HOCON)<textarea id="p-network" rows="6" spellcheck="false" required></textarea></label>
+      <label>links.json (optional)<textarea id="p-links" rows="3" spellcheck="false"></textarea></label>
+      <button class="btn" type="submit">Check these files</button>
+      <p class="muted">For sites that block cross-origin reads, or before you deploy. Nothing leaves your browser.</p>
+    </form>
+  </div>
+  <p id="status" role="status" class="status"></p>
+</section>
+
+<section id="report" class="report" hidden>
+  <div id="verdict" class="verdict">
+    <div><p class="eyebrow">Verdict</p><h2 id="verdict-title"></h2><p id="verdict-target" class="target"></p></div>
+    <div id="counts" class="counts"></div>
+  </div>
+  <div class="report-grid">
+    <div class="panel">
+      <h3>Agent network</h3>
+      <div id="graph" class="graph"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="ask-desk">Ask the desk what to fix</button>
+        <button type="button" class="btn ghost" id="copy-md">Copy as Markdown</button>
+        <button type="button" class="btn ghost" id="dl-json">Download JSON</button>
+      </div>
+    </div>
+    <div class="panel"><h3>Checks</h3><div id="checks"></div></div>
+  </div>
+</section>
+
+<section id="desk" class="desk">
+  <div class="desk-head">
+    <p class="eyebrow">Ask the desk</p>
+    <h2>An agent network that checks agent networks</h2>
+    <p>The Doorframe desk is this site's own open agent network: a front desk, a conformance auditor that runs the checker through site actions, a fix writer, and a spec reference that lives on another origin and loads into your browser after you approve it. Your LLM key stays in this browser and goes only to the router you pick.</p>
+  </div>
+  <p id="assistant-status" role="status" class="status">Loading the desk...</p>
+  <div id="agent-app"></div>
+</section>
+
+<section id="connect" class="connect">
+  <h2>Call the desk from your own network</h2>
+  <p>Any open agentic website can load the desk as a peer network. Add a link slot to your network and bind it in your <code>links.json</code>:</p>
+<pre><code>{
+  "version": 1,
+  "networks": {
+    "your_network": { "conformance_desk": "<span id="self-url"></span>" }
+  }
+}</code></pre>
+  <p>The desk then runs in your visitor's browser with your router and their key, never ours.</p>
+</section>
+
+<section id="cli" class="connect">
+  <h2>Same checks in a terminal or CI</h2>
+<pre><code>git clone https://github.com/didrod205/doorframe
+node doorframe/cli/doorframe.mjs https://your-site.example/agents/
+# exit code 1 when any check fails</code></pre>
+  <p>The CLI reads response headers directly, so it reports the exact <code>Access-Control-Allow-Origin</code> value a browser would see.</p>
+</section>
+</main>
+
+<footer>
+  <p>Doorframe checks against the <a href="https://github.com/cognizant-ai-labs/agentic-web/blob/main/docs/worldwide_agentic_web_mvp_spec.md">Minimum Viable Specification for a Worldwide Agentic Web</a>. Structural validation and the desk use the reference browser runtime from that repository (Apache-2.0). A check result is a technical reading of public files, not an official judgment.</p>
+  <p>Built with Claude, an AI agent, which wrote the code and text. Open source under Apache-2.0.</p>
+</footer>
+</body>
+</html>
